@@ -1,4 +1,4 @@
-// android/build.gradle
+
 
 // based on:
 //
@@ -10,17 +10,11 @@
 //   original location:
 //   - https://github.com/facebook/react-native/blob/0.58-stable/local-cli/templates/HelloWorld/android/app/build.gradle
 
-def DEFAULT_COMPILE_SDK_VERSION = 28
-def DEFAULT_BUILD_TOOLS_VERSION = '28.0.3'
-def DEFAULT_MIN_SDK_VERSION = 16
-def DEFAULT_TARGET_SDK_VERSION = 28
-
 def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'maven'
 
 buildscript {
     // The Android Gradle plugin is only required when opening the android folder stand-alone.
@@ -30,23 +24,24 @@ buildscript {
     if (project == rootProject) {
         repositories {
             google()
-            jcenter()
+            mavenCentral()
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:3.4.1'
+            classpath 'com.android.tools.build:gradle:4.2.2'
         }
     }
 }
 
-apply plugin: 'com.android.library'
-apply plugin: 'maven'
-
 android {
-    compileSdkVersion safeExtGet('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
-    buildToolsVersion safeExtGet('buildToolsVersion', DEFAULT_BUILD_TOOLS_VERSION)
+    compileSdkVersion safeExtGet('compileSdkVersion', 28)
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     defaultConfig {
-        minSdkVersion safeExtGet('minSdkVersion', DEFAULT_MIN_SDK_VERSION)
-        targetSdkVersion safeExtGet('targetSdkVersion', DEFAULT_TARGET_SDK_VERSION)
+        minSdkVersion safeExtGet('minSdkVersion', 16)
+        targetSdkVersion safeExtGet('targetSdkVersion', 28)
         versionCode 1
         versionName "1.0"
     }
@@ -57,17 +52,13 @@ android {
 
 repositories {
     // ref: https://www.baeldung.com/maven-local-repository
-    mavenLocal()
     maven {
         // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
         url "$rootDir/../node_modules/react-native/android"
     }
-    maven {
-        // Android JSC is installed from npm
-        url "$rootDir/../node_modules/jsc-android/dist"
-    }
     google()
-    jcenter()
+    mavenLocal()
+    mavenCentral()
 }
 
 dependencies {
