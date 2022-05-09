@@ -1,4 +1,12 @@
 buildscript {
+    ext.versions = [
+        'compileSdk': 31,
+        'minSdk': 21,
+        'targetSdk': 31,
+        'sourceCompatibility': JavaVersion.VERSION_1_8,
+        'targetCompatibility': JavaVersion.VERSION_1_8
+    ]
+
     // The Android Gradle plugin is only required when opening the android folder stand-alone.
     // This avoids unnecessary downloads and potential conflicts when the library is included as a
     // module dependency in an application project.
@@ -18,24 +26,6 @@ apply plugin: 'com.android.library'
 
 def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
-}
-
-android {
-    compileSdkVersion safeExtGet('compileSdkVersion', 31)
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    defaultConfig {
-        minSdkVersion safeExtGet('minSdkVersion', 16)
-        targetSdkVersion safeExtGet('targetSdkVersion', 28)
-        versionCode 1
-        versionName "1.0"
-    }
-    lintOptions {
-        abortOnError false
-    }
 }
 
 repositories {
